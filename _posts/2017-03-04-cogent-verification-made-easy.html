@@ -1,0 +1,46 @@
+---
+layout: post
+title: Cogent - verification made easy
+date: 2017-03-04 12:28:20.000000000 +11:00
+type: post
+published: true
+status: publish
+categories:
+- Cogent
+tags:
+- programming
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '2492168109'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>At <a href="https://ts.data61.csiro.au/projects/TS/">Trustworthy Systems</a>, we are one of the few places that understand software verification. We've built the worlds only verified, <a href="https://ts.data61.csiro.au/projects/seL4/">general</a> <a href="https://ts.data61.csiro.au/projects/seL4/">purpose micro-kernel</a>. And many people in the group are core contributors to <a href="https://isabelle.in.tum.de/">Isabelle/HOL</a> and <a href="https://cakeml.org/">CakeML</a>. And, as a group, we not only believe in software verification, we understand what it involves, and also realise that the returns we get from verified software don't come cheap. With that in mind, we started working on <a href="https://ts.data61.csiro.au/projects/TS/cogent.pml">Cogent</a>, with the aim of reducing the cost of verified systems. For those who are keen to read about how we achieve that, I suggest reading the publications section <a href="https://ts.data61.csiro.au/projects/TS/cogent.pml">here</a>.</p>
+<h3>What is Cogent?</h3>
+<blockquote><p>Cogent is a <em>restricted</em>, <em>polymorphic</em>, <em>higher-order</em> and <em>purely functional</em> language with <em>linear types</em> and <em>without the need for a trusted runtime</em> or <em>garbage collector</em>.</p></blockquote>
+<p>In the context of Cogent, the adjectives that I used above, mean the following:</p>
+<ul>
+<li>restricted: Cogent omits certain features that one might come to expect from a programming language. For instance, Cogent doesn't support general recursion.</li>
+<li>polymorphic: This is similar to templates in C++ or generics in Rust.</li>
+<li>higher-order: Cogent uses software components like functions, modules or objects as values.</li>
+<li>purely functional: Cogent forbids changing state, mutable data. Evaluation is done similar to a mathematical function.</li>
+<li>linear types: 'Objects'(although there is no such concept in Cogent, I'm using it to very broadly define instances/variable of a particular type) can be used exactly once. <a href="https://www.rust-lang.org/en-US/">Rust</a> does something similar, I think.</li>
+<li>trusted runtime: Cogent compiler generates C code, so the trusted component is limited to the C runtime system.</li>
+<li>garbage collector: Since Cogent compiler generates C code, we would manage memory manually, like we do in any C program.</li>
+</ul>
+<p>Being very new to functional programming, language theory and type systems, my level of understanding of the theory behind the earlier mentioned concepts, is still pretty shallow. For an authoritative and in-depth explanation of these concepts, please refer to the Cogent <a href="https://ts.data61.csiro.au/projects/TS/cogent.pml">publication list</a> and <a href="https://au.linkedin.com/in/liamoconnordavis">Liam O'Connor</a>'s(one of the compiler writers, the other being <a href="https://au.linkedin.com/in/zilin-chen-0174bb98">Zilin Chen</a>) <a href="http://liamoc.net/archive.html">blog</a>, where he occasionally writes about the compiler and type system.</p>
+<p>As mentioned earlier, one of the key ideas behind developing Cogent is to reduce the cost of verifying software. Since we are a systems engineering research group, our focus is particularly on reducing the cost of verifing system software. And that brings us to the next key question.</p>
+<h3>What can Cogent be used for?</h3>
+<p>I want to respond to the question with the answer, "For anything", but I would be lying. If you intend to write a program in Cogent that prints a  "Hello, World", I can tell you that it isn't possible without using C code, since we don't have IO support in Cogent. Infact things that are simple to write in other programming languages, loops for example, have very complicated usage patterns in Cogent.</p>
+<p>I think, for any compiler to be good enough, it takes a long time and a lot of man-years(Look at gcc, llvm/clang, rustc and various other mature compilers). In comparison, Cogent is still in its infancy and at our peak, we had about 4 compiler developers(We have 2 people working on the compiler now). Having said that, the Cogent compiler does let us write verifiable Linux file system drivers, and it does some parts of it well. Infact we have implemented 3 filesystems(at various levels of completion) in Cogent - <a href="https://arxiv.org/abs/1511.04169">bilbyfs</a>, <a href="https://en.wikipedia.org/wiki/Ext2">ext2</a> and <a href="https://en.wikipedia.org/wiki/File_Allocation_Table#FAT32">vfat</a>.  All of the Cogent source is available on <a href="https://github.com/NICTA/cogent/">Github</a>.</p>
+<p>Our eventual goal is to have complete implementations of these(and more) filesystems along with other parts of the system software stack, viz., networking code, drivers and the like. Currently the implementations we have in Cogent have varying degrees of performance costs(based on the usage, as highlighted in the Cogent paper), but we are working towards making sure that we don't lose out on performance,  although we aren't there yet.</p>
+<h3>Why?</h3>
+<p>I've already explained why we are working on Cogent, and what our goals are. And if I have piqued your interest enough, I suggest that you got read some of the papers in the publication list.</p>
+<p>What I want to mention is why I'm writing about this now. Two reasons. One, I think writing about it will give me a lot more clarity about what I've personally done so far, and what I want to do with the project going forward. And two, I want to be able to talk about Cogent from an engineers perspective. When I started working on this project a year ago, I was overwhelmed. Having mostly used imperative languages for as long as I remember and having primarily done systems programming, everything looked daunting. It was a steep learning curve trying to understand functional programming, Haskell, software verification. And after having spent a year trying to implement ext2, f2fs and contributing a little to the compiler, which is written in Haskell(I forgot to mention that earlier), I've started to appreciate these ideas a lot more. I have barely scratched the surface, but I'm very enthusiastically digging deeper.</p>
+<p>My idea is to write several posts about using Cogent and this post is meant to be a curtain-raiser for the posts(time permitting) that follow.</p>
+<p>One last thing. Liam gave a talk titled, <a href="https://dl.acm.org/citation.cfm?id=2951940">Refinement through Restraint: Bringing Down the Cost of Verification</a>  at <a href="http://icfpconference.org/">ICFP</a> 2016, the video of which is available <a href="https://www.youtube.com/watch?v=sJwcm_worfM">here</a>. The 26 minute talk is both entertaining and informative and it is worth a watch.</p>

@@ -1,0 +1,18 @@
+---
+layout: post
+title: Finding standard search paths for gcc includes
+date: 
+type: post
+published: false
+status: draft
+categories: []
+tags: []
+meta: {}
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>cpp -v /dev/null -o /dev/null 2&gt;&amp;1 | awk '/&gt; search starts here:/{flag=1;next}/End of search list./{flag=0}flag'</p>

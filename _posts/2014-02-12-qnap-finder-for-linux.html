@@ -1,0 +1,42 @@
+---
+layout: post
+title: QNAP finder for Linux
+date: 2014-02-12 12:00:41.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- c
+- GNU
+- linux
+- QNAP
+meta:
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _edit_last: '1204261'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>I have a QNAP Turbo NAS TS410. And under a DHCP setup that is available where I live, it is difficult to figure out the IP address of my NAS box is every time I restart, since the router isn't doing a great job with the DHCP leases. The <a href="http://www.qnap.com/v3/en/product_x_down/product_down_cat.php?csn=4&amp;p_cat=1">QNAP Finder for Linux</a> that QNAP provides has strict dependencies on a specific gtk+ version. The source isn't available, making it impossible to use on my Arch Linux machine.</p>
+<p>It got me wondering  though, what the app actually does. I installed the Windows version of it on a borrowed laptop and using wireshark, I figured a bunch of things, all of which I've documented <a href="https://github.com/ajaysusarla/qnap-finder/blob/master/README">here</a>. With that information, I wrote a small command-line utility that will essentially do the job for me.  I call it <em>qnap-finder</em> and it is available on <a href="https://github.com/ajaysusarla/qnap-finder">github</a>.</p>
+<p>A quick preview of what the tool shows when run:</p>
+<p><code><br />
+$ ./qnap-finder<br />
+1)<br />
+Hostname    : blah<br />
+IP Address  : 10.0.0.30<br />
+Type           : NAS(TS-410)TS-419ITS-410<br />
+</code></p>
+<p>This is just the basic detail. There is a lot more information available, like the number of hard disks, the version of the firmware which I still haven't got to parsing and displaying, will get that done soon. Hopefully someone else will find this useful. And it is quite possible that I haven't done something right, so please feel free to contribute/fork or <a href="https://github.com/ajaysusarla/qnap-finder/issues">report bugs</a>.</p>
+<pre>* Disclaimer
+============
+This program is a work in progress and isn't guaranteed to work with all QNAP devices.
+Although this is meant to be a replacement for the Windows/Mac versions of QNAP finder,
+it is not guaranteed to work that way.</pre>

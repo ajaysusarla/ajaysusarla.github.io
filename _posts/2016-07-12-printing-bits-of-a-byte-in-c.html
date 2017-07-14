@@ -1,0 +1,43 @@
+---
+layout: post
+title: Printing bits of a byte in C
+date: 2016-07-12 13:37:52.000000000 +10:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- c
+- linux
+- programming
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '24712996544'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>Printing the bit representation of a byte is a very simple and interesting problem. There are numerous ways this can be done in many different programming languages out there. In C, one would do something like this for signed integers:</p>
+<p>https://gist.github.com/ajaysusarla/660f22f62e5aa9dd1d55b57fec818eeb</p>
+<p>What exactly is this function doing?</p>
+<p>Most of the code is pretty obvious. The key portions of the code are in lines 3 and 9.</p>
+<p>Line 3, calculates the maximum possible positive value for the given type. In the example above, the given type is an <strong><em>int</em></strong>, and on my machine running GNU/Linux(x86_64),  the number of bits in an <em><strong>int</strong></em> is <strong>32</strong> and its maximum possible positive value for <strong>2147483648</strong>.</p>
+<p>The binary representation(shown in 4 chunks of 8 bits) of <strong>1</strong> on a 32 bit machine is:</p>
+<blockquote><p>00000000 00000000 00000000 00000001</p></blockquote>
+<p>which when left-shifted 31 times(line 3 in the above code), becomes(notice how the digit <strong>1</strong> has moved from being the LSB to being the MSB):</p>
+<blockquote><p>10000000 00000000 00000000 00000000</p></blockquote>
+<p>whose decimal value is <strong>2147483648</strong>.</p>
+<p>Having got the <em><strong>max</strong></em> value, we then bitwise-and(<em><strong>&amp;)</strong></em> it with the give number(represented by <em><strong>num</strong></em>) and check the result(line 8). The bitwise-and will yield a number greater than <em><strong>0</strong></em>, if there is a <strong>1</strong> in the MSB and will yield a <strong>0</strong> otherwise. Based on the result of this operation, we either print a <strong>1</strong> or a <strong>0.</strong></p>
+<p>In each iteration, we left-shift  the given number by 1 bit(line 9). We continue to iterate until we've traversed all bits.</p>
+<p>We can modify the function <em><strong>print_bits()</strong></em> to print the output in a much more readable fashion:</p>
+<p>https://gist.github.com/ajaysusarla/f0c1882402257780811e739db3f0fdb1</p>
+<p>We can also implement a function to count the number of <strong>1's</strong> and <strong>0's</strong> in the binary representation of a given number:</p>
+<p>https://gist.github.com/ajaysusarla/1ceeff43d6043004cf1aa3e8dbf75891</p>
+<p>The <em><strong>count_bits()</strong></em> function above for input number 2 which in binary is <strong>00000000 00000000 00000000 00000010 </strong>we get an output:</p>
+<blockquote><p>2 has 31 0's and 1 1's in its binary representation.</p></blockquote>
+<p>&nbsp;</p>
+<p>This post is a result of a discussion with my nephew who recently took to programming and I was trying to explain bits and bytes to him. Although C is probably not the right language when introducing a high-schooler to programming, I thought it is the language that expresses bits and bytes well, and also, it is the language that I know the best.</p>

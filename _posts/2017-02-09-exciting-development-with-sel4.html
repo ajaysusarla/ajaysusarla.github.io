@@ -1,0 +1,28 @@
+---
+layout: post
+title: seL4 now runs on Pi3
+date: 2017-02-09 09:51:39.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- programming
+- seL4
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '1666050628'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>Very recently, we(the <a href="http://ts.data61.csiro.au/projects/TS/" target="_blank">Trustworthy Systems</a> group) merged Raspberry Pi 3 support for <a href="http://ts.data61.csiro.au/projects/seL4/" target="_blank">seL4</a>. <a href="https://research.csiro.au/tsblog/sel4-raspberry-pi-3/" target="_blank">This</a> excellent blog post by <a href="https://ts.data61.csiro.au/people/?cn=Kofi+Doku+Atuah">Kofi</a> already highlights why this is great news. Personally, it is exciting because, a Raspberry Pi 3 is a lot more accessible than all the <a href="https://wiki.sel4.systems/Hardware">other boards</a> we've previously ran our kernel on. I own one too, and it is absolutely amazing that I can run, muck around and put my Raspberry Pi 3 to some good use. I've been playing around with seL4 on my Pi3. The things that I'm currently trying to do are:</p>
+<ul>
+<li>Get Haskell runtime on seL4. Some might say this is an exercise in futility, but this will help me get <a href="https://ts.data61.csiro.au/projects/TS/cogent.pml" target="_blank">Cogent</a> build on seL4, and then I can start building verified systems software(currently file systems) on top of seL4. Ofcourse, this involves a lot more than just the filesystem implementation(need a VFS layer, block cache, drivers etc.). It might be a long shot, but hey, I'm trying!</li>
+<li>The OS that I've been trying to build, <em><strong>forever</strong></em>(Who hasn't tried to build one, really?). With seL4, the kernel is taken care of, letting us build all the fun stuff on top(Students of the <a href="https://www.cse.unsw.edu.au/~cs9242/current/" target="_blank">AOS</a> class at UNSW do exactly this).</li>
+</ul>
+<p>Good times!</p>

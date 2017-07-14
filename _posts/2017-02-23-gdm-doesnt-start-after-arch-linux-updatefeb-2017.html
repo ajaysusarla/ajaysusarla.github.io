@@ -1,0 +1,30 @@
+---
+layout: post
+title: gdm doesn't start after Arch Linux update(Feb 2017).
+date: 2017-02-23 00:00:59.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- linux
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '2151520832'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>I update my workstation once a week, and I typically do it before I turn the machine off, so that I have an updated system the next time I'm using it. Being on a bleeding edge distro like Arch, I <a href="https://spartha.org/2014/02/13/arch-linux-kernel-soft-lockup-issues/">occassionally</a> have trouble with the update, like it happened this morning. (Actually it is amazing how infrequent problems with upgrades are, it speaks volumes about the Arch Linux development community, hats off to you guys).</p>
+<p>This morning when I turned my machine on, after the boot sequence, I was just shown a blank screen instead of the usual <a href="https://wiki.archlinux.org/index.php/GDM">GDM</a> login prompt. The logs (Xorg logs and system logs) showed nothing wrong. And restarting gdm didn't help either. I was clueless and I switched to using <a href="https://wiki.archlinux.org/index.php/LightDM">lightDM</a>. LightDM gave me the login screen. I still wasn't sure what the problem was. I thought it could be some broken Wayland dependency. But when I tried runing the HipChat Linux client, I noticed the following errors on the terminal:</p>
+<pre><code>libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast</code></pre>
+<p>And then it dawned on me, that this could be a driver error and I actually might be missing the GL driver for my NVIDIA Quadro 600 Card, so I ran:</p>
+<pre><code>$ sudo pacman -S nvidia-libgl
+</code></pre>
+<p>and restarted gdm, and it worked. The HipChat client runs too. This problem most likely occurs when using the nVidia binary drivers, like I do. I'm not sure if  the <a href="https://nouveau.freedesktop.org/wiki/">Nouveau</a> drivers have the same issue. Or if</p>

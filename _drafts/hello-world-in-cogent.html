@@ -1,0 +1,54 @@
+---
+layout: post
+title: Hello, World in Cogent
+date: 
+type: post
+published: false
+status: draft
+categories:
+- Cogent
+tags:
+- programming
+meta: {}
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>This post talks about writing a "Hello, World" program in Cogent. The goal behind this exercise is two-fold:</p>
+<ul>
+<li>to give the reader a peek into writing a program in Cogent</li>
+<li>and to give an overview of the different parts of a Cogent program<br />
+and how they fit together</li>
+</ul>
+<p>Before proceeding further, make sure that the Cogent compiler is built and installed.  Please follow instructions <a href="https://github.com/NICTA/cogent/blob/master/README.md" target="_blank" rel="noopener">here</a> and <a href="https://github.com/NICTA/cogent/blob/master/cogent/INSTALL.md" target="_blank" rel="noopener">here</a> to build the Cogent compiler.</p>
+<p>So let's get started!</p>
+<p>Cogent compiler has several <a href="http://ts.data61.csiro.au/images/cogent-overview.png">phases</a>, and one of the last things it does is generate C code(from the Cogent code) and invoke a C compiler, to build an ELF object(executable or a kernel module as dictated by the project build rules). Essentially, the Cogent compiler is tightly coupled with a C compiler.<br />
+Cogent relies on C code for entry and exit into a program(or a kernel module). Typically a Cogent project will have a C file(or in some cases an anti-quoted C file) along with Cogent code. The C file has the entry function into the program (<code>main()</code> for an executable and <code>module_init()</code> in the case of a Linux kernel module), which can invoke Cogent functions directly(if <code>main()</code> or <code>module_init()</code> are in a <code>.ac</code> file) or indirectly(if <code>main()</code> or <code>module_init()</code> are in a <code>.c</code> file). We will see shortly, the difference between a <code>main.c</code> and a <code>main.ac</code> file.</p>
+<p><span style="text-decoration:underline;"><strong>Structure of Cogent project</strong></span></p>
+<p>A Cogent 'project' in its simplest of forms has the following files:</p>
+<ul>
+<li>one or more Cogent source files (Cogent source files have a <em>.cogent</em> extension)</li>
+<li>one or more anti-quoted C source files(anti-quoted C source files have <em>.ac</em> extension)</li>
+<li>A text file listing all the Cogent functions, each separated by a newline, that are called from anti-quoted C source files.</li>
+<li>an optional(but highly recommended) <em>Makefile</em>.</li>
+</ul>
+<p>So at the bare minimum, there are 4 files in a Cogent project.  Let us now see how this maps to the "Hello, World!" project we are about to implement.</p>
+<p><span style="text-decoration:underline;"><strong>Cogent idiosyncrasies</strong></span></p>
+<p>There are a few idiosyncrasies that one needs to get used to when writing Cogent code. I like to highlight these two:</p>
+<ul>
+<li>Cogent source files cannot be empty. The Cogent compiler just doesn't like it.</li>
+<li>All functions in Cogent take only one argument. This is true of most functional languages(read <a href="https://en.wikipedia.org/wiki/Currying" target="_blank" rel="noopener">currying</a>), but this needs a bit of getting used to.</li>
+</ul>
+<p><span style="text-decoration:underline;"><strong>Hello, World!</strong></span></p>
+<p>We will create 4 empty files in our project:</p>
+<ul>
+<li><em>Makefile</em></li>
+<li><em>main.ac</em></li>
+<li><em>HelloWorld.cogent</em></li>
+<li><em>entrypoints.cfg</em></li>
+</ul>
+<p>For now, use <a href="https://gist.github.com/ajaysusarla/0502bad26f5b4bfa1c08829b98618e31#file-makefile">this</a> as the template for the Makefile. The source file names could be anything, just make sure that the Makefile reflects those names.</p>
+<p>&nbsp;</p>

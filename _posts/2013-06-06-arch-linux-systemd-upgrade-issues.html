@@ -1,0 +1,50 @@
+---
+layout: post
+title: Arch Linux Systemd upgrade issues
+date: 2013-06-06 15:53:40.000000000 +10:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- linux
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1204261'
+  _oembed_bbf6d41863729e0df6a342ee26c17d29: "{{unknown}}"
+  _oembed_e5bafd31a986f5f453f9d31034d203e9: "{{unknown}}"
+  _oembed_3a3fc9016046e58b1e456f7bfe12a61f: "{{unknown}}"
+  _oembed_52ee3a26d0a89d22e4566f90a880520f: "{{unknown}}"
+  _oembed_df4e208b42647f5e4f08560ddcf73572: "{{unknown}}"
+  _oembed_9213a7cff646e40d21606013963c0484: "{{unknown}}"
+  _oembed_913d05a6ab41fb1ab1b412d432266ffc: "{{unknown}}"
+  _oembed_3639954a3bf24dd59ecadeed1597db26: "{{unknown}}"
+  _oembed_4829003cedbcf24fcb6bf237d4230018: "{{unknown}}"
+  _oembed_c6e497edd335a4c0133cbb1fa97a3deb: "{{unknown}}"
+  _oembed_15b822502dbf6c516c409ea394e58614: "{{unknown}}"
+  _oembed_a79d8883c89e68d7f5f512d86f5cacd1: "{{unknown}}"
+  _oembed_c875a6a077f3507a1cb93e6c00d6d145: "{{unknown}}"
+  _oembed_466ca45a313da9788b35c279b6dce077: "{{unknown}}"
+  _oembed_28490ebec9e4cacc99f07642da89de94: "{{unknown}}"
+  _oembed_4a4fe7079e49e8cb7ecbf24708c74884: "{{unknown}}"
+  _oembed_4375b7209d70c0e0e327ff0f146a5807: "{{unknown}}"
+  _oembed_6417c03d04d2a805613cea39f6d7b126: "{{unknown}}"
+  _oembed_604d8349616a2bb1fecb54ce2a59d4f6: "{{unknown}}"
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>After an update of my Arch OS over the weekend, my system refused to boot with this error:<br />
+<code><br />
+Error: Root device mounted successfully, but /sbin/init does not exist. Bailing out, you are on your own. Good luck.<br />
+</code><br />
+I should admit that I love the unassuming tone of the message.</p>
+<p>For the latest update to happen, a bit of manual intervention is required.  More details on that <a href="https://www.archlinux.org/news/binaries-move-to-usrbin-requiring-update-intervention/" target="_blank">here</a>. Once the update is done, the machine will refuse to boot when restarted. To get your system running again edit the grub entry in the grub menu, find the line <em><strong>init=/bin/systemd</strong></em> and replace it with <em><strong>init=/usr/lib/systemd/systemd</strong></em> and continue to boot the system with modified init parameter.</p>
+<p>To make the change permanent, modify the /etc/default/grub file, and change the value of <strong>GRUB_CMDLINE_LINUX_DEFAULT</strong> by appending <em><b>init=/usr/lib/systemd/systemd</b></em> to it. On my machine, it looks like this:</p>
+<p><code>GRUB_CMDLINE_LINUX_DEFAULT="init=/usr/lib/systemd/systemd"</code></p>
+<p>And generate a new <em>grub.cfg</em> by running <em><strong>grub-mkconfig</strong></em>. Make sure that you replace your existing <em>grub.cfg</em> (typically in <em><strong>/boot/grub/</strong></em>) with the new one.</p>
+<p>The reason for this problem is that with the latest version of systemd (version 204-1) on Arch, the symbolic link that existed earlier to /bin doesn't anymore, since /bin doesn't exist anymore (read <a href="https://mailman.archlinux.org/pipermail/arch-dev-public/2012-March/022625.html" target="_blank">this</a> post, for the reason behind that).</p>

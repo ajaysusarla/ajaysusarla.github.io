@@ -1,0 +1,44 @@
+---
+layout: post
+title: Updates on QNAP Finder for Linux
+date: 2014-02-19 13:06:14.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- c
+- GNU
+- linux
+- QNAP
+meta:
+  _edit_last: '1204261'
+  _publicize_pending: '1'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>I have made a few fixes to the qnap-finder, and pushed those changes to <a href="http://spartha.org/2014/02/12/qnap-finder-for-linux/">qnap-finder</a> repository on github. Visually, the only change that is seen is the access URL:<br />
+<code><br />
+$ ./qnap-finder<br />
+1)<br />
+Hostname    : cher<br />
+IP Address  : 10.0.0.59<br />
+Type        : NAS(TS-410)TS-419ITS-410<br />
+URL         : https://10.0.0.59/cgi-bin/login.html<br />
+</code></p>
+<p>If run with '-h' or '--help', qnap-finder will now display a list of all available options.<br />
+<code><br />
+$ ./qnap-finder -h<br />
+qnap-finder v0.1</code></p>
+<p>Usage: qnap-finder [options]</p>
+<p>options include:<br />
+--help|-h          This help text<br />
+--detail|-d        Query for detailed information.(default is brief)<br />
+--verbose|-v       Verbose debug<br />
+--version|-V       Prints current version</p>
+<p>More updates, when I have them.</p>

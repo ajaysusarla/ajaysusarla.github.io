@@ -1,0 +1,93 @@
+---
+layout: post
+title: Arch Linux kernel soft lockup issues!
+date: 2014-02-13 11:59:51.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- boot
+- grub
+- linux
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1204261'
+  sharing_disabled: '1'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>Earlier this morning, my laptop (a Lenovo Thinkpad X220) refused to wake up from suspend. And afer a hard reset, my machine refused to boot with the following messages on the console:</p>
+<p><code><br />
+BUG: soft lockup = CPU#1 stuck for 22s! [which:604]<br />
+hda_codec: rates == 0 (ni=0x10, val=0x0, ovrd=1)<br />
+hda_codec: cannot attach PCM stream 0 for codec #0<br />
+INFO: rcu_preempt detected stalls on CPUs/tasks: { 0}<br />
+</code></p>
+<p>Rebooting the machine again didn't help,It was the same error again, but this time around it was systemd and systemd-udev causing the lockup. Pretty clueless and with no access to the interwebs I was at least hoping to get a stack trace of some sort. There were none.</p>
+<p>My first (and the most obvious) suspect was the kernel and drivers. I had a quick look at my <em>grub.cfg</em>, part of which is shown here:</p>
+<p><code><br />
+menuentry 'Arch Linux Linux, with Linux core repo kernel' --class arch --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-core repo kernel-true-7cb6bd41-b198-4d1d-8ae4-fc8f169abb00' {<br />
+load_video<br />
+set gfxpayload=keep<br />
+insmod gzio<br />
+insmod part_gpt<br />
+insmod ext2<br />
+set root='hd0,gpt3'<br />
+if [ x$feature_platform_search_hint = xy ]; then<br />
+search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt3 --hint-efi=hd0,gpt3 --hint-baremetal=ahci0,gpt3  7cb6bd41-b198-4d1d-8ae4-fc8f169abb00<br />
+else<br />
+search --no-floppy --fs-uuid --set=root 7cb6bd41-b198-4d1d-8ae4-fc8f169abb00<br />
+fi<br />
+echo    'Loading Linux core repo kernel ...'<br />
+linux    /boot/vmlinuz-linux root=UUID=7cb6bd41-b198-4d1d-8ae4-fc8f169abb00 ro root=/dev/sda3 ro fastboot splash=silent quiet threadirqs add_efi_memmap pcie_aspm=force i915.i915_enable_rc6=7 i915.i915_enable_fbc=1 i915.lvds_downclock=1 rootfstype=ext4 init=/usr/lib/systemd/systemd<br />
+echo    'Loading initial ramdisk ...'<br />
+initrd    /boot/initramfs-linux.img<br />
+}<br />
+</code></p>
+<p>I decided to cut down all the cruft and see if I can get the machine up and running. Switching to the grub command-line, i did the following(remember TAB completion is your friend):</p>
+<p><code><br />
+insmod part_gpt<br />
+insmod ext2<br />
+set root=(hd0,gpt3)<br />
+linux /boot/vmlinuz-linux root=/dev/sda3 rootfstype=ext4<br />
+initrd /boot/initramfs-linux.img<br />
+boot<br />
+</code></p>
+<p>Thankfully, That worked!</p>
+<p>With my machine back in action. The next step was to look through the kernel docs. And I found this about soft lockups:</p>
+<blockquote><p>A 'softlockup' is defined as a bug that causes the kernel to loop in<br />
+kernel mode for more than 20 seconds (see "Implementation" below for<br />
+details), without giving other tasks a chance to run.</p></blockquote>
+<p>More about it <a href="https://www.kernel.org/doc/Documentation/lockup-watchdogs.txt">here</a>. There is even a command line parameter, <em>softlockup_panic</em> (search for it in <a href="//www.kernel.org/doc/Documentation/kernel-parameters.txt">kernel parameters</a> doc) that will help generate the much needed stack trace.</p>
+<p>This problem is clearly system specific. Some combination of the kernel alongwith drivers and/or firmware messes around with usage of the cpu. In my case it is one of the following parameters:</p>
+<pre>* threadirqs
+* add_efi_memmap
+* pcie_aspm=force
+* i915 and family</pre>
+<p>I had a personal committment to get to, so didn't probe this issue any further, will get to it during the weekend. For now, I thought I should share it, in case someone else might find this information helpful and also has some pointers on what caused the problem.</p>
+<p>I am currently running <em>3.13.2-1-ARCH</em> kernel and <em>xf86-video-intel 2.99.910-1</em> drivers. The machine has an <em>Intel(R) Core(TM) i5-2520M CPU @ 2.50GHz</em> and the following PCI hardware:</p>
+<pre>
+00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+00:02.0 VGA compatible controller: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics Controller (rev 09)
+00:16.0 Communication controller: Intel Corporation 6 Series/C200 Series Chipset Family MEI Controller #1 (rev 04)
+00:16.3 Serial controller: Intel Corporation 6 Series/C200 Series Chipset Family KT Controller (rev 04)
+00:19.0 Ethernet controller: Intel Corporation 82579LM Gigabit Network Connection (rev 04)
+00:1a.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (rev 04)
+00:1b.0 Audio device: Intel Corporation 6 Series/C200 Series Chipset Family High Definition Audio Controller (rev 04)
+00:1c.0 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 1 (rev b4)
+00:1c.1 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 2 (rev b4)
+00:1c.3 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 4 (rev b4)
+00:1c.4 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 5 (rev b4)
+00:1d.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #1 (rev 04)
+00:1f.0 ISA bridge: Intel Corporation QM67 Express Chipset Family LPC Controller (rev 04)
+00:1f.2 SATA controller: Intel Corporation 6 Series/C200 Series Chipset Family 6 port SATA AHCI Controller (rev 04)
+00:1f.3 SMBus: Intel Corporation 6 Series/C200 Series Chipset Family SMBus Controller (rev 04)
+03:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 [Taylor Peak] (rev 34)
+0d:00.0 System peripheral: Ricoh Co Ltd MMC/SD Host Controller (rev 07)
+</pre>

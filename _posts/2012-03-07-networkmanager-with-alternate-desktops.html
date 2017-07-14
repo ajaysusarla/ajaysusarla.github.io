@@ -1,0 +1,32 @@
+---
+layout: post
+title: NetworkManager with alternate desktops
+date: 2012-03-07 16:42:00.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- gnome
+- linux
+meta:
+  lj_itemid: '46'
+  lj_permalink: http://jus4kix.livejournal.com/11933.html
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>I use <a href="http://xmonad.org/">Xmonad</a>. Its simple, its light-weight, and it just works most of the time, i haven&#039;t seen it broken between updates. Essentially, the usual set of reasons why we all stick to some piece of software that works. And I&#039;ve realised lately, that i&#039;ve been using less of the Gnome Software Stack. For instance, I gave up on using Evolution for gnus,&nbsp; gnome-terminal for urxvt and so on.</p>
+<p>But there is one thing that i love to use from the Gnome stack though, and it is Network Manager. Network Manager has improved so much, and the current version works well and is quite reliable. The downside to using Network Manager though is that it is tightly integrated with the Gnome Stack(viz. ConsoleKit, PolicyKit et.al), understandably so.</p>
+<p>So with <a href="http://slim.berlios.de">SLIM</a> as my login manager and Xmonad as the window manager, there are some problems that i enounter from time to time. The latest one being not able to connect to any new wireless networks (debian/testing). Looking at /var/log/messages, i found:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>** (nm-applet:1715): WARNING **: Failed to add/activate connection: (32) Insufficient privileges.</i></p>
+<p>I figured that it must be a consolekit/policykit problem. I remember from when i was making the move to Xmonad, that i had to launch using &#039;ck-launch-session&#039;, so i modified the login_cmd entry &nbsp;/etc/slim.conf to:</p>
+<div><i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;login_cmd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exec ck-launch-session /bin/bash -login /etc/X11/Xsession %session</i></div>
+<p>And in &nbsp;~/.xsession file i run:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;<i>/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1&amp;</i></p>
+<p>And after i logged out and logged back in, Network Manager is back in action again.</p>
+<p>Alternatively, one could create a file <i>/etc/polkit-1/localauthority/50-local.d/org.freedesktop.NetworkManager.pkla</i> containing:<br /><i>&nbsp;&nbsp;&nbsp;&nbsp; [nm-applet]<br />&nbsp;&nbsp;&nbsp;&nbsp; Identity=unix-group:netdev<br />&nbsp;&nbsp;&nbsp;&nbsp; Action=org.freedesktop.NetworkManager.*<br />&nbsp;&nbsp;&nbsp;&nbsp; ResultAny=yes<br />&nbsp;&nbsp;&nbsp;&nbsp; ResultInactive=no<br />&nbsp;&nbsp;&nbsp;&nbsp; ResultActive=yes</i></p>
+<p>And make sure that the user you intend to provide access to is in the <i>netdev</i> group. The above file gives permission to everybody in the netdev group. Personally, I prefer the former, since I think it is the &quot;right way&quot;[TM] to achieve what i want to. But again, this is Linux, and there is no one way to do anything. So feel free to chose what you prefer doing.</p>

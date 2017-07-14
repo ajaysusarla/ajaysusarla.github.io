@@ -1,0 +1,37 @@
+---
+layout: post
+title: Suspend issue with my Linux box
+date: 2012-10-12 14:04:17.000000000 +11:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- Arch
+- gnome
+- linux
+- systemd
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1204261'
+  sharing_disabled: '1'
+  switch_like_status: '1'
+author:
+  login: ajaysusarla
+  email: ajaysusarla@gmail.com
+  display_name: partha
+  first_name: ''
+  last_name: ''
+---
+<p>A few weeks ago, i completely moved to using <a title="systemd" href="http://freedesktop.org/wiki/Software/systemd/" target="_blank">systemd</a> on my machine (it runs <a href="http://www.archlinux.org/" target="_blank">Arch</a>). And since then i was facing a really weird issue when i closed my laptop lid. My laptop, with Gnome3, suspends itself when i close. And when i open my laptop lid, i was prompted with the familiar gnome-screensaver password dialog, as expected. But right after i could see the password dialog, the system went back to suspend state again. Looking through the system logs, i saw that the suspend was being called twice in succession. And i didn't have the problem, if I ran <a href="http://linux.die.net/man/8/pm-suspend" target="_blank">pm-suspend</a> from the command-line. It was clear that suspend was being done twice, but i wasn't sure what was actually triggering it.</p>
+<p>After a quick web search and not finding anything useful, i started digging into systemd's man pages and found the <a href="http://www.freedesktop.org/software/systemd/man/logind.conf.html" target="_blank">logind.conf(5)</a> man page.  Voila, there it was:</p>
+<blockquote><p><code>HandlePowerKey=</code>, <code>HandleSuspendKey=</code>, <code>HandleHibernateKey=</code>, <code>HandleLidSwitch=</code></p>
+<p>Controls whether logind shall handle the system power and sleep keys and the lid switch to trigger actions such as system power-off or suspend. Can be one of<code>ignore</code>, <code>poweroff</code>, <code>reboot</code>, <code>halt</code>, <code>kexec</code> and <code>hibernate</code>. If <code>ignore</code> logind will never handle these keys. Otherwise the specified action will be taken in the respective event. Only input devices with the <code>power-switch</code> udev tag will be watched for key/lid switch events. <code>HandlePowerKey=</code> defaults to <code>poweroff</code>. <code>HandleSuspendKey=</code> and<code>HandleLidSwitch=</code> default to <code>suspend</code>. <code>HandleHibernateKey=</code> defaults to <code>hibernate</code>.</p></blockquote>
+<p>The <a href="https://wiki.archlinux.org/index.php/Main_Page" target="_blank">Arch Wiki</a> has a good explanation of the settings in the <a href="https://wiki.archlinux.org/index.php/Systemd#ACPI_Power_Management_with_systemd" target="_blank">power management</a> section of the <a href="https://wiki.archlinux.org/index.php/Systemd" target="_blank">systemd</a> wiki page.</p>
+<p>I realised that gnome does its own power management and with systemd running, it does its job of suspended as well. So i had this happening twice. My first instinct was to disable suspend settings in Gnome, but that didn't seem possible, even with the gnome-tweak-tool installed. So I just put the following lines in my <em>/etc/systemd/logind.conf</em>:</p>
+<blockquote><p>HandlePowerKey=ignore<br />
+HandleSuspendKey=ignore<br />
+HandleHibernateKey=ignore<br />
+HandleLidSwitch=ignore</p></blockquote>
+<p>This essentially will make sure that systemd doesn't handle the system lid and suspend functions.</p>
+<p>This is the first issue that i encountered after i moved to using systemd. (A non-issue actually). I am very happy with how systemd works. I should admit i was quite skeptical before i started using it, but now I'm very used to the whole idea. And whats more, i do notice the faster boot and shutdown times. I haven't actually measured it, but I'm quite sure that if i did, i would notice a difference. But, thats for later!</p>
