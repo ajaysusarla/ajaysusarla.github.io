@@ -8,13 +8,29 @@ Welcome to my web-abode. Here you will find my blog where I try to maintain a he
 
 Professionally, I’m a computer programmer. Computers are fun and every time I read or write good code, I’m reminded of what Alan Perils, one of the great computer scientists says about computer science (I read this in SICP):
 
-    “I think that it’s extraordinarily important that we in computer science keep fun in computing. When it started out, it was an awful lot of fun. Of course, the paying customers got shafted every now and then, and after a while we began to take their complaints seriously. We began to feel as if we really were responsible for the successful, error-free perfect use of these machines. I don’t think we are. I think we’re responsible for stretching them, setting them off in new directions, and keeping fun in the house. I hope the field of computer science never loses its sense of fun. Above all, I hope we don’t become missionaries. Don’t feel as if you’re Bible salesmen. The world has too many of those already. What you know about computing other people will learn. Don’t feel as if the key to successful computing is only in your hands. What’s in your hands, I think and hope, is intelligence: the ability to see the machine as more than when you were first led up to it, that you can make it more.”
+```
+I think that it’s extraordinarily important that we in computer
+science keep fun in computing. When it started out, it was an awful
+lot of fun. Of course, the paying customers got shafted every now and
+then, and after a while we began to take their complaints seriously.
+We began to feel as if we really were responsible for the successful,
+error-free perfect use of these machines. I don’t think we are. I
+think we’re responsible for stretching them, setting them off in new
+directions, and keeping fun in the house. I hope the field of computer
+science never loses its sense of fun. Above all, I hope we don’t
+become missionaries. Don’t feel as if you’re Bible salesmen. The world
+has too many of those already. What you know about computing other
+people will learn. Don’t feel as if the key to successful computing is
+only in your hands. What’s in your hands, I think and hope, is
+intelligence: the ability to see the machine as more than when you
+were first led up to it, that you can make it more.
+```
 
 I like anything outdoorsy(Cycling, swimming, running or any sport). And I love good food. I live in the land down under and proudly call Melbourne home.
 
 ### GPG PUBLIC KEY
 
-
+```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQINBFkre58BEAC+Sy6Wv+MqTK6uLXZOVbN6lbtcieRYgS2AKdrLWcTeSiDTb8oy
@@ -66,6 +82,7 @@ KiGnT5efp5CP3DKeAiRq6EYInRfrawQfOxcg2X9IOfhcYrltVkTp7NKjNS+K5kQL
 T3yzCwPhZI5/E0+OAz1shoFsiR1yhvJY5xwdYTuer/KthXfXXD/CygGioXs=
 =fvVC
 -----END PGP PUBLIC KEY BLOCK-----
+```
 
 ### Contact me
 
