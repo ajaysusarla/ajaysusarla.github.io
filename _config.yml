@@ -36,6 +36,7 @@ exclude:
   - Gemfile.lock
   - LICENSE
   - README.md
+  - jekyll-theme-LICENSE.md
   - CNAME
 
 # Custom vars
