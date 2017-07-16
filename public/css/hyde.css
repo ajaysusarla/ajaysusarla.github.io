@@ -100,10 +100,7 @@ a.sidebar-nav-item:focus {
 }
 
 .sidebar-site-links {
-  margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+  margin-top: 40px;
 }
 
 /* Sticky sidebar

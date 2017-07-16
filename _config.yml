@@ -10,9 +10,11 @@ kramdown:
     css_class: 'highlight'
 
 sidebar-links:
+  email: mail@spartha.org
   twitter: sp4rth4
-  github: ajaysusarla
   linkedin: parthasusarla
+  github: ajaysusarla
+
 
 # Permalinks
 permalink:        pretty
