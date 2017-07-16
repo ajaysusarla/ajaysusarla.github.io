@@ -6,7 +6,7 @@ permalink: /about/
 
 Welcome to my web-abode. Here you will find my blog where I try to maintain a healthy mix of both technical and non-technical topics.  You will also find links to some of the projects that I’m working on or have worked on in the past on the [Projects](https://spartha.org/projects) page.
 
-Professionally, I’m a computer programmer. Computers are fun and every
+Professionally, I’m a computer programmer. Computers are fun. And every
 time I read or write good code, I’m reminded of what [Alan Perils](https://en.wikipedia.org/wiki/Alan_Perlis), one
 of the great computer scientists says about computer science (I read
 this in [SICP](https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-3.html)):

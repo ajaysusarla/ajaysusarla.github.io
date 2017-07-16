@@ -9,6 +9,11 @@ kramdown:
     # Use existing pygments syntax highlighting css
     css_class: 'highlight'
 
+sidebar-links:
+  twitter: sp4rth4
+  github: ajaysusarla
+  linkedin: parthasusarla
+
 # Permalinks
 permalink:        pretty
 
@@ -26,8 +31,8 @@ author:
 paginate:         5
 
 # Set the Sass partials directory, as we're using @imports
-sass:
-  style: :expanded # You might prefer to minify using :compressed
+#sass:
+#  style: :expanded # You might prefer to minify using :compressed
 
 
 # Exclude these files from your production _site
