@@ -52,5 +52,6 @@ version:          2.1.0
 github:
   repo:           https://github.com/ajaysusarla
 
-plugins:
+gems:
   - jekyll-paginate
+  - jekyll-gist
