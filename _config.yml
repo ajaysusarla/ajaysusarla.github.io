@@ -26,10 +26,6 @@ description:      '!(just another brick in the wall)'
 url:              https://spartha.org
 baseurl:          /
 
-author:
-  name:           'Partha'
-  url:            https://twitter.com/
-
 paginate:         5
 
 # Set the Sass partials directory, as we're using @imports
@@ -45,12 +41,6 @@ exclude:
   - README.md
   - jekyll-theme-LICENSE.md
   - CNAME
-
-# Custom vars
-version:          2.1.0
-
-github:
-  repo:           https://github.com/ajaysusarla
 
 plugins:
   - jekyll-paginate

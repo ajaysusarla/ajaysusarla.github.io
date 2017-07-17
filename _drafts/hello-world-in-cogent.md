@@ -3,8 +3,8 @@ layout: post
 title: Hello, World in Cogent
 date: 
 type: post
-published: false
-status: draft
+published: true
+status: publish
 categories:
 - Cogent
 tags:
@@ -104,6 +104,50 @@ now,
 the template for the Makefile. The source file names could be anything,
 just make sure that the `Makefile` reflects those names. We will go
 through the Cogent compiler options in later section.
+
+The first version of `main.ac` will look like this:
+```
+int main(void)
+{
+        return 0;
+}
+```
+
+Since a Cogent source file cannot be empty, add the following
+lines in `HelloWorld.cogent`:
+```
+include <gum/common/common.cogent>
+```
+
+Running `make` in the project directory, should spew a lot of
+warnings(ignore them for now) and generated a `hello-world`
+exectuable. Which, when run, will do nothing.
+
+### Libgum
+
+The included
+file[common.cogent](https://github.com/NICTA/cogent/blob/master/cogent/lib/gum/common/common.cogent) in
+`HelloWorld.cogent` has some standard abstract data types and
+functions that can be used in any Cogent project and is part
+of
+[libgum](https://github.com/NICTA/cogent/tree/master/cogent/lib/gum)
+which provides various abstract data types and functions that can be
+used to write Linux kernel modules among other things.
+The `include` keyword in Cogent, works like the C include directive
+It looks for the file that is being included in the standard path. The
+standard include path for libgum on your machine can be found out by
+running `cogent --stdgum-dir`.
+```
+$ cogent --stdgum-dir
+/home/partha/cogent/cogent/.cabal-sandbox/share/x86_64-linux-ghc-8.0.1/cogent-2.0.8.0/include/
+$
+```
+And similar to the C, the `include` in Cogent can be used either with
+`include "file.cogent"`, to include your own cogent code and `include
+<file.cogent>` to include the cogent code in `libgum`.
+
+### HelloWorld.cogent
+
 
 
 {% gist ajaysusarla/0502bad26f5b4bfa1c08829b98618e31 Makefile %}
